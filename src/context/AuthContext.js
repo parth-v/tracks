@@ -5,30 +5,51 @@ import { navigate } from '../navigationRef';
 
 const authReducer = (state, action) => {
 	switch(action.type) {
-		case 'signup': 
+		case 'signin': 
 			return { errMessage: '', token: action.payload }; 
 		case 'add_err': 
-			return { ...state, errMessage: action.payload }; 
+			return { ...state, errMessage: action.payload };
+		case 'clear_err':
+			return { ...state, errMessage: '' }; 
 		default: 
 			return state;
 	};
+};
+
+const tryAutoSignIn = dispatch => async () => {
+	const token = await AsyncStorage.getItem('token');
+	if(token) {
+		dispatch({ type: 'signin', payload: token });
+		navigate('TrackList');
+	} else {
+		navigate('loginFlow');
+	}
+};
+
+const clearErr = dispatch => () => {
+	dispatch({ type: 'clear_err' });
 };
 
 const signup = (dispatch) => async ({ email, password }) => {
 	try {
 		const response = await trackerApi.post('/signup', { email, password });
 		await AsyncStorage.setItem('token', response.data.token);
-		dispatch({ type: 'signup', payload: response.data.token });
+		dispatch({ type: 'signin', payload: response.data.token });
 		navigate('TrackList');
 	} catch (err) {
-		dispatch({ type: 'add_err', payload: 'Something went wrong!' });
+		dispatch({ type: 'add_err', payload: 'Something went wrong with Sign Up!' });
 	}
 };
 
-const signin = (dispatch) => {
-	return ({ email, password }) => {
-
-	};
+const signin = (dispatch) => async ({ email, password }) => {
+	try {
+		const response = await trackerApi.post('/signin', { email, password });
+		await AsyncStorage.setItem('token',response.data.token);
+		dispatch({ type: 'signin', payload: response.data.token });
+		navigate('TrackList');
+	} catch (err) {
+		dispatch({ type: 'add_err', payload: "Something went wrong with Sign In!"});
+	}
 };
 
 const signout = (dispatch) => {
@@ -38,6 +59,6 @@ const signout = (dispatch) => {
 };
 export const { Context, Provider } = createDataContext(
 	authReducer,
-	{ signup, signin, signout},
+	{ signup, signin, signout, clearErr, tryAutoSignIn },
 	{ token: null, errMessage: '' }
 );

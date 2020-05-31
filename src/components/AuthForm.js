@@ -44,7 +44,6 @@ const AuthForm = ({ headerText, submitButtonTitle, onSubmit, errMessage }) => {
 const styles = StyleSheet.create({
 	errStyle: {
 		color: 'red',
-		marginLeft: 15,
 		textAlign: 'center'
 	}
 });
