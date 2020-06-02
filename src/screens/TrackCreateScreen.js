@@ -1,11 +1,32 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import '../_mockLocation'; 	
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { Text } from 'react-native-elements';
+import { SafeAreaView } from 'react-navigation';
+import Map from '../components/Map';
+import { requestPermissionsAsync } from 'expo-location';
 
 const TrackCreateScreen = () => {
-	return(
-		<View>
-			<Text style={{ fontSize: 48 }}>TrackCreateScreen</Text>
-		</View>
+	const [err, setErr] = useState(null); 
+	
+	const startWatching = async () => {
+		try {
+			await requestPermissionsAsync();
+		} catch(e) {
+			setErr(e);
+		}
+	};
+
+	useEffect(() => {
+		startWatching();	
+	}, []);
+
+	return (
+		<SafeAreaView forceInset={{ top:'always'}} >
+			<Text h2>TrackCreateScreen</Text>
+			<Map />
+			{ err ? <Text>Please enable location services</Text> : null }
+		</SafeAreaView>
 	);
 };
 
