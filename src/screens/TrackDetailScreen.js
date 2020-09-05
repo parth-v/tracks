@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { Context as TrackContext } from '../context/TrackContext';
 import MapView, { Polyline } from 'react-native-maps';
+import Spacer from '../components/Spacer';
 
 const TrackDetailScreen = ({ navigation }) => {
 	const { state } = useContext(TrackContext);
@@ -12,7 +13,9 @@ const TrackDetailScreen = ({ navigation }) => {
 
 	return(
 		<>
+			<Spacer>
 			<Text style={{ fontSize: 48 }}>{track.name}</Text>
+			</Spacer>
 			<MapView
 				style={styles.map}
 				initialRegion={{
@@ -23,6 +26,9 @@ const TrackDetailScreen = ({ navigation }) => {
 			>
 				<Polyline coordinates={track.locations.map(loc => loc.coords)} />
 			</MapView>
+			<Spacer>
+				<Text> Relive the moments of your journey! </Text>
+			</Spacer>
 		</>
 	);
 };

@@ -19,7 +19,7 @@ const TrackForm = () => {
 			<Spacer>
 				<Input 
 					value={name} 
-					placeholder="Enter name"
+					placeholder="Enter track title"
 					onChangeText={changeName}
 				/>
 			</Spacer>

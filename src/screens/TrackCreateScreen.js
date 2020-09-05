@@ -6,6 +6,7 @@ import { SafeAreaView, withNavigationFocus } from 'react-navigation';
 import Map from '../components/Map';
 import { Context as LocationContext } from '../context/LocationContext'; 
 import useLocation from '../hooks/useLocation';
+import Spacer from '../components/Spacer';
 import TrackForm from '../components/TrackForm';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -20,7 +21,9 @@ const TrackCreateScreen = ({ isFocused }) => {
 
 	return (
 		<SafeAreaView forceInset={{ top:'always'}} >
-			<Text h2>TrackCreateScreen</Text>
+			<Spacer>
+			<Text h2>Create New Track</Text>
+			</Spacer>
 			<Map />
 			{ err ? <Text>Please enable location services</Text> : null }
 			<TrackForm />
